@@ -8,28 +8,13 @@ from src.config import R_SYSTEM_PROMPT
 from tools.weather_tool import get_current_weather
 from tools.datetime_tool import get_current_time
 
-load_dotenv()
+from agent.dataConfig import cargar_system_prompt
+from protocol.console_interface import ConsoleInterface
 
+
+load_dotenv()
 client = genai.Client()
 
-def cargar_system_prompt() -> str:
-    with open(R_SYSTEM_PROMPT, "r", encoding="UTF-8") as f:
-        template = f.read()
-
-    
-    config_datos = {
-        "agent_name": "DevAssist",
-        "domain": "desarrollo de software y APIs",
-        "primary_objective": "ayudar a estructurar código de forma limpia",
-        "target_audience": "desarrolladores",
-        "user_expertise": "intermedio",
-        "allowed_behaviors": "dar ejemplos claros y precisos, mantener una estructura lógica, priorizar buenas prácticas",
-        "forbidden_behaviors": "inventar información técnica, asumir conocimientos no declarados, proporcionar respuestas vagas",
-        "tone": "técnico y directo",
-        "language": "Español"
-    }
-
-    return template.format(**config_datos)
 
 def main():
     print("Agente listo. Escribe tu consulta (o 'salir' para finalizar):")
@@ -45,23 +30,8 @@ def main():
         )
     )
 
-    while True:
-        user_input = input("\nTú: ").strip()
-        
-        if user_input.lower() in ["salir", "exit", "quit"]:
-            print("Cerrando sesión del agente...")
-            break
-            
-        if not user_input:
-            continue
-
-        
-        try:
-            response = chat.send_message(user_input)
-            print("\nRespuesta del modelo:")
-            print(response.text)
-        except Exception as e:
-            print(f"\n[Error temporal del servidor]: {e}\nIntenta enviar el mensaje nuevamente.")
+    interfaz = ConsoleInterface() #Cambio de Interfaz según se necesite
+    interfaz.start(chat)
 
 if __name__ == "__main__":
     main()
