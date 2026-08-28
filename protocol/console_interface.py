@@ -1,7 +1,7 @@
 from .base_interface import BaseInterface
 
 class ConsoleInterface(BaseInterface):
-    def start(self, chat_session):
+    def start(self, chat):
         print("\n--- Modo Consola Iniciado ---")
         while True:
             user_input = input("\nTú: ").strip()
@@ -12,7 +12,7 @@ class ConsoleInterface(BaseInterface):
                 continue
 
             try:
-                response = chat_session.send_message(user_input)
+                response = chat.send_message(user_input)
                 print(f"\nAgente: {response.text}")
             except Exception as e:
                 print(f"\n[Error]: {e}")

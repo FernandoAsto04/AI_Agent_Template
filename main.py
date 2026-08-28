@@ -10,6 +10,7 @@ from tools.datetime_tool import get_current_time
 
 from agent.dataConfig import cargar_system_prompt
 from protocol.console_interface import ConsoleInterface
+from protocol.tts_interface import TTSInterface
 
 
 load_dotenv()
@@ -30,7 +31,8 @@ def main():
         )
     )
 
-    interfaz = ConsoleInterface() #Cambio de Interfaz según se necesite
+    #interfaz = ConsoleInterface() #Cambio de Interfaz según se necesite
+    interfaz = TTSInterface(client)
     interfaz.start(chat)
 
 if __name__ == "__main__":
